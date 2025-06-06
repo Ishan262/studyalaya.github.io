@@ -16,6 +16,7 @@
         <ul>
             <li><a href="#subjects">Subjects</a></li>
             <li><a href="#resources">Resources</a></li>
+            <li><a href="#ai-bot">AI Tutor</a></li>
             <li><a href="#about">About</a></li>
         </ul>
     </nav>
@@ -24,7 +25,7 @@
         <section id="subjects">
             <h2>Subjects</h2>
             <div id="subject-list">
-                <!-- Populated by JSON data -->
+                <!-- Populated dynamically from JSON -->
             </div>
         </section>
 
@@ -35,6 +36,15 @@
                 <li>Sample Papers</li>
                 <li>Video Lectures</li>
             </ul>
+        </section>
+
+        <section id="ai-bot">
+            <h2>Ask the AI Tutor</h2>
+            <div class="chatbox">
+                <div id="chat-log" class="chat-log"></div>
+                <input type="text" id="user-input" placeholder="Type your question (e.g., 'Solve x^2 - 4 = 0')" />
+                <button onclick="handleChat()">Ask</button>
+            </div>
         </section>
 
         <section id="about">
@@ -64,6 +74,44 @@
                 });
             })
             .catch(error => console.error('Error loading subjects:', error));
+
+        // AI Chatbot Logic
+        function handleChat() {
+            const input = document.getElementById('user-input');
+            const chatLog = document.getElementById('chat-log');
+            const question = input.value.trim();
+
+            if (!question) return;
+
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-message user';
+            userMsg.textContent = question;
+            chatLog.appendChild(userMsg);
+
+            setTimeout(() => {
+                const aiResponse = getAIResponse(question);
+                const botMsg = document.createElement('div');
+                botMsg.className = 'chat-message bot';
+                botMsg.textContent = aiResponse;
+                chatLog.appendChild(botMsg);
+                chatLog.scrollTop = chatLog.scrollHeight;
+            }, 500);
+
+            input.value = '';
+        }
+
+        function getAIResponse(question) {
+            const lowerQ = question.toLowerCase();
+            if (question.includes("x^2 - 4 = 0")) {
+                return "The equation x² - 4 = 0 has solutions x = 2 and x = -2.";
+            } else if (lowerQ.includes("photosynthesis")) {
+                return "Photosynthesis is the process by which green plants use sunlight to make food from carbon dioxide and water.";
+            } else if (lowerQ.includes("pythagoras")) {
+                return "The Pythagorean Theorem states that a² + b² = c² for right-angled triangles.";
+            } else {
+                return "I'm still learning! Try asking about math, science, or social science topics from Class 10.";
+            }
+        }
     </script>
 </body>
 </html>
