@@ -16,6 +16,16 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
+// Root route for browser visits
+app.get("/", (req, res) => {
+    res.json({ 
+        message: "AI Backend is running!", 
+        endpoints: {
+            chat: "POST /chat - Send a message to the AI tutor"
+        }
+    });
+});
+
 app.post("/chat", async (req, res) => {
     const userMessage = req.body.message;
 
