@@ -1,120 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EduLearn - 24/7 AI Study Assistant</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f9;
-    }
-
-    header {
-      background-color: #333;
-      color: white;
-      padding: 10px 0;
-      text-align: center;
-    }
-
-    nav ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    nav ul li {
-      display: inline;
-      margin: 0 15px;
-    }
-
-    nav ul li a {
-      color: white;
-      text-decoration: none;
-    }
-
-    #hero {
-      background-color: #009688;
-      color: white;
-      padding: 50px 20px;
-      text-align: center;
-    }
-
-    .cta-button {
-      background-color: #ff5722;
-      color: white;
-      padding: 10px 20px;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-
-    section {
-      padding: 20px;
-      margin: 20px 0;
-    }
-
-    .project {
-      background-color: white;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .project-link {
-      color: #009688;
-      text-decoration: none;
-    }
-
-    footer {
-      background-color: #333;
-      color: white;
-      text-align: center;
-      padding: 10px 0;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduLearn Foundation - Class 10</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
+    <header>
+        <h1>EduLearn Foundation</h1>
+        <p>Learning Portal for Class 10 Students</p>
+    </header>
+
     <nav>
-      <ul>
-        <li><a href="#about">About Me</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
+        <ul>
+            <li><a href="#subjects">Subjects</a></li>
+            <li><a href="#resources">Resources</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
     </nav>
-  </header>
 
-  <section id="hero">
-    <h1>Hi, I'm [Your Name]</h1>
-    <p>Welcome to my personal portfolio showcasing my projects and skills.</p>
-    <a href="#projects" class="cta-button">View My Projects</a>
-  </section>
+    <main>
+        <section id="subjects">
+            <h2>Subjects</h2>
+            <div id="subject-list">
+                <!-- Populated by JSON data -->
+            </div>
+        </section>
 
-  <section id="about">
-    <h2>About Me</h2>
-    <p>I'm a passionate developer with experience in various technologies like HTML, CSS, JavaScript, and more.</p>
-  </section>
+        <section id="resources">
+            <h2>Featured Resources</h2>
+            <ul>
+                <li>NCERT Book PDFs</li>
+                <li>Sample Papers</li>
+                <li>Video Lectures</li>
+            </ul>
+        </section>
 
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="project">
-      <h3>Project Title</h3>
-      <p>Brief description of the project...</p>
-      <a href="https://example.com/project" class="project-link">View Project</a>
-    </div>
-    <!-- Add more projects here -->
-  </section>
+        <section id="about">
+            <h2>About EduLearn Foundation</h2>
+            <p>EduLearn Foundation is designed to help Class 10 students strengthen their basics in Science, Math, and Social Science with curated materials and engaging lessons.</p>
+        </section>
+    </main>
 
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:your-email@example.com">your-email@example.com</a></p>
-    <p>LinkedIn: <a href="https://www.linkedin.com/in/your-profile">your-profile</a></p>
-  </section>
+    <footer>
+        <p>&copy; 2025 EduLearn Foundation. All rights reserved.</p>
+    </footer>
 
-  <footer>
-    <p>&copy; 2025 [Your Name]. All rights reserved.</p>
-  </footer>
+    <script>
+        // Load subject data from subjects.json
+        fetch('subjects.json')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('subject-list');
+                data.subjects.forEach(subject => {
+                    const card = document.createElement('div');
+                    card.className = 'subject-card';
+                    card.innerHTML = `
+                        <h3>${subject.name}</h3>
+                        <p>${subject.description}</p>
+                    `;
+                    container.appendChild(card);
+                });
+            })
+            .catch(error => console.error('Error loading subjects:', error));
+    </script>
 </body>
 </html>
