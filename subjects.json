@@ -1,0 +1,24 @@
+{
+    "subjects": [
+        {
+            "name": "Mathematics",
+            "description": "Algebra, Geometry, Trigonometry, and Statistics."
+        },
+        {
+            "name": "Science",
+            "description": "Physics, Chemistry, Biology with practical examples."
+        },
+        {
+            "name": "Social Science",
+            "description": "History, Civics, Geography, and Economics."
+        },
+        {
+            "name": "English",
+            "description": "Grammar, Literature, and Writing Skills."
+        },
+        {
+            "name": "Hindi",
+            "description": "Language skills, prose, and poetry."
+        }
+    ]
+}
