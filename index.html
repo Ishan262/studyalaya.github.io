@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduLearn Foundation - Class 10</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Studyalaya Foundation - Class 10</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
     <header>
@@ -16,6 +16,7 @@
         <ul>
             <li><a href="#subjects">Subjects</a></li>
             <li><a href="#resources">Resources</a></li>
+            <li><a href="#ai-bot">AI Tutor</a></li>
             <li><a href="#about">About</a></li>
         </ul>
     </nav>
@@ -24,7 +25,7 @@
         <section id="subjects">
             <h2>Subjects</h2>
             <div id="subject-list">
-                <!-- Populated by JSON data -->
+                <!-- Populated from JSON -->
             </div>
         </section>
 
@@ -37,9 +38,20 @@
             </ul>
         </section>
 
+        <section id="ai-bot">
+            <h2>Ask the AI Tutor</h2>
+            <div class="chatbox">
+                <div id="chat-log" class="chat-log"></div>
+                <input type="text" id="user-input" placeholder="Ask your Class 10 question here..." />
+                <button onclick="handleChat()">Ask</button>
+            </div>
+        </section>
+
         <section id="about">
             <h2>About EduLearn Foundation</h2>
-            <p>EduLearn Foundation is designed to help Class 10 students strengthen their basics in Science, Math, and Social Science with curated materials and engaging lessons.</p>
+            <p>
+                EduLearn Foundation is designed to help Class 10 students strengthen their basics in Science, Math, and Social Science with curated materials and engaging lessons.
+            </p>
         </section>
     </main>
 
@@ -48,7 +60,7 @@
     </footer>
 
     <script>
-        // Load subject data from subjects.json
+        // Load subject data from JSON
         fetch('subjects.json')
             .then(response => response.json())
             .then(data => {
@@ -64,6 +76,43 @@
                 });
             })
             .catch(error => console.error('Error loading subjects:', error));
+
+        // AI Chatbot functionality (connected to Replit backend)
+        async function handleChat() {
+            const input = document.getElementById('user-input');
+            const chatLog = document.getElementById('chat-log');
+            const question = input.value.trim();
+
+            if (!question) return;
+
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-message user';
+            userMsg.textContent = question;
+            chatLog.appendChild(userMsg);
+
+            input.value = '';
+
+            const botMsg = document.createElement('div');
+            botMsg.className = 'chat-message bot';
+            botMsg.textContent = 'Thinking...';
+            chatLog.appendChild(botMsg);
+
+            try {
+                const response = await fetch('https://1b5e94ce-6773-446a-96d6-3c50f6efb9c1-00-2mmj12s1ucuol.sisko.replit.dev/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: question })
+                });
+
+                const data = await response.json();
+                botMsg.textContent = data.reply;
+            } catch (error) {
+                console.error('Chat error:', error);
+                botMsg.textContent = 'Error: Unable to connect to the AI tutor right now.';
+            }
+
+            chatLog.scrollTop = chatLog.scrollHeight;
+        }
     </script>
 </body>
 </html>
