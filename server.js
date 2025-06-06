@@ -1,55 +1,50 @@
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const { Configuration, OpenAIApi } = require('openai');
 
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const { OpenAI } = require("openai"); // ✅ New import for v4.x
-require("dotenv").config();
-
+// Setup Express app
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-// ✅ New OpenAI usage for v4.x
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+// OpenAI setup using Replit Secret
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
 });
+const openai = new OpenAIApi(configuration);
 
-// Root route for browser visits
-app.get("/", (req, res) => {
-    res.json({ 
-        message: "AI Backend is running!", 
-        endpoints: {
-            chat: "POST /chat - Send a message to the AI tutor"
-        }
+// AI Chat Route
+app.post('/chat', async (req, res) => {
+  const { message } = req.body;
+
+  if (!message) {
+    return res.status(400).json({ reply: "No message received." });
+  }
+
+  try {
+    const completion = await openai.createChatCompletion({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: message }],
     });
+
+    const reply = completion.data.choices[0].message.content.trim();
+    res.json({ reply });
+  } catch (err) {
+    console.error('OpenAI error:', err.response?.data || err.message);
+    res.status(500).json({ reply: "Sorry, I couldn't respond right now." });
+  }
 });
 
-app.post("/chat", async (req, res) => {
-    const userMessage = req.body.message;
-
-    try {
-        const chatCompletion = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
-            messages: [
-                {
-                    role: "system",
-                    content: "You are a helpful Class 10 tutor.",
-                },
-                { role: "user", content: userMessage },
-            ],
-            max_tokens: 200,
-        });
-
-        const reply = chatCompletion.choices[0].message.content.trim();
-        res.json({ reply });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ reply: "Sorry, I couldn't respond right now." });
-    }
+// Default fallback
+app.get('/', (req, res) => {
+  res.send('AI Assistant is running.');
 });
 
-app.listen(port, '0.0.0.0', () => {
-    console.log(`✅ AI Backend running at http://0.0.0.0:${port}`);
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
