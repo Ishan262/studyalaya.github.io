@@ -27,6 +27,19 @@ app.get("/", (req, res) => {
         }
     });
 });
+// Temporary route to test OpenAI API key
+app.get('/test-openai', async (req, res) => {
+  try {
+    const response = await openai.createChatCompletion({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: 'Hello!' }],
+    });
+    res.send(response.data.choices[0].message.content);
+  } catch (err) {
+    console.error('❌ /test-openai failed:', err.response?.data || err.message);
+    res.status(500).send('OpenAI connection failed');
+  }
+});
 
 // AI Chat Route
 app.post("/chat", async (req, res) => {
