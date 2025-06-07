@@ -18,15 +18,6 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Root route for browser visits
-app.get("/", (req, res) => {
-    res.json({ 
-        message: "AI Backend is running!", 
-        endpoints: {
-            chat: "POST /chat - Send a message to the AI tutor"
-        }
-    });
-});
 // Temporary route to test OpenAI API key
 app.get('/test-openai', async (req, res) => {
   try {
@@ -39,6 +30,15 @@ app.get('/test-openai', async (req, res) => {
     console.error('❌ /test-openai failed:', err.response?.data || err.message);
     res.status(500).send('OpenAI connection failed');
   }
+});
+// Root route for browser visits
+app.get("/", (req, res) => {
+    res.json({ 
+        message: "AI Backend is running!", 
+        endpoints: {
+            chat: "POST /chat - Send a message to the AI tutor"
+        }
+    });
 });
 
 // AI Chat Route
