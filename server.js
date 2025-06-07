@@ -11,6 +11,8 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
+console.log('✅ OPENAI_API_KEY loaded:', !!process.env.OPENAI_API_KEY);
+
 // OpenAI setup using Replit Secret
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
