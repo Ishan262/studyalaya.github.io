@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const OpenAI = require("openai");
+const { Configuration, OpenAIApi } = require("openai");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,34 +11,40 @@ app.use(bodyParser.json());
 
 console.log("✅ OPENAI_API_KEY loaded:", !!process.env.OPENAI_API_KEY);
 
-// OpenAI setup using Replit Secret
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
+// ✅ /test-openai route to verify connectivity
+const axios = require("axios");
 
 app.get("/test-openai", async (req, res) => {
-    try {
-        if (!process.env.OPENAI_API_KEY) {
-            console.error("🔴 OPENAI_API_KEY is missing!");
-            return res.status(500).send("API key not available");
-        }
+  const key = process.env.OPENAI_API_KEY;
+  if (!key) {
+    console.error("❌ API key missing");
+    return res.status(500).send("API key not found");
+  }
 
-        const response = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
-            messages: [{ role: "user", content: "Hello" }],
-        });
+  try {
+    const response = await axios.post(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: "Hello" }],
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${key}`,
+        },
+      }
+    );
 
-        res.send(response.choices[0].message.content);
-    } catch (err) {
-        console.error(
-            "❌ /test-openai failed:",
-            err.response?.data || err.message,
-        );
-        res.status(500).send("OpenAI connection failed");
-    }
+    res.send(response.data.choices[0].message.content);
+  } catch (err) {
+    console.error("❌ Raw API test failed:", err.response?.data || err.message);
+    res.status(500).send("OpenAI raw connection failed");
+  }
 });
 
-// Root route for browser visits
+
+// Root route
 app.get("/", (req, res) => {
     res.json({
         message: "AI Backend is running!",
@@ -48,6 +54,7 @@ app.get("/", (req, res) => {
     });
 });
 
+// ✅ /chat endpoint
 app.post("/chat", async (req, res) => {
     const { message } = req.body;
 
@@ -61,12 +68,17 @@ app.post("/chat", async (req, res) => {
     }
 
     try {
-        const completion = await openai.chat.completions.create({
+        const configuration = new Configuration({
+            apiKey: process.env.OPENAI_API_KEY,
+        });
+        const openai = new OpenAIApi(configuration);
+
+        const completion = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             messages: [{ role: "user", content: message }],
         });
 
-        const reply = completion.choices[0].message.content.trim();
+        const reply = completion.data.choices[0].message.content.trim();
         res.json({ reply });
     } catch (err) {
         console.error(
@@ -77,7 +89,6 @@ app.post("/chat", async (req, res) => {
     }
 });
 
-// Start server
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`🚀 Server is running on port ${PORT}`);
 });
