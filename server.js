@@ -33,8 +33,15 @@ app.post('/chat', async (req, res) => {
 
     const reply = completion.data.choices[0].message.content.trim();
     res.json({ reply });
+
   } catch (err) {
-    console.error('OpenAI error:', err.response?.data || err.message);
+    console.error('🔴 OpenAI API Error:');
+    if (err.response) {
+      console.error('Status:', err.response.status);
+      console.error('Data:', err.response.data);
+    } else {
+      console.error('Message:', err.message);
+    }
     res.status(500).json({ reply: "Sorry, I couldn't respond right now." });
   }
 });
