@@ -33,46 +33,42 @@
     </footer>
 
     <script>
-        async function handleChat() {
-            const input = document.getElementById('user-input');
-            const chatLog = document.getElementById('chat-log');
-            const question = input.value.trim();
+async function handleChat() {
+  const input = document.getElementById('user-input');
+  const chatLog = document.getElementById('chat-log');
+  const question = input.value.trim();
 
-            if (!question) return;
+  if (!question) return;
 
-            // Display user message
-            const userMsg = document.createElement('div');
-            userMsg.className = 'chat-message user';
-            userMsg.textContent = question;
-            chatLog.appendChild(userMsg);
+  const userMsg = document.createElement('div');
+  userMsg.className = 'chat-message user';
+  userMsg.textContent = "You: " + question;
+  chatLog.appendChild(userMsg);
 
-            // Clear input field
-            input.value = '';
+  const botMsg = document.createElement('div');
+  botMsg.className = 'chat-message bot';
+  botMsg.textContent = 'AI Tutor is thinking...';
+  chatLog.appendChild(botMsg);
 
-            // Display bot thinking message
-            const botMsg = document.createElement('div');
-            botMsg.className = 'chat-message bot';
-            botMsg.textContent = 'Thinking...';
-            chatLog.appendChild(botMsg);
+  try {
+    const response = await fetch('https://studyalaya-github-io.onrender.com/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ message: question })
+    });
 
-            chatLog.scrollTop = chatLog.scrollHeight; // Scroll to the bottom
+    const data = await response.json();
+    botMsg.textContent = "AI: " + data.reply;
+  } catch (error) {
+    console.error('Error:', error);
+    botMsg.textContent = 'Error: Unable to connect to the AI Tutor right now.';
+  }
 
-            try {
-                const response = await fetch('https://1b5e94ce-6773-446a-96d6-3c50f6efb9c1-00-2mmj12s1ucuol.sisko.replit.dev/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: question })
-                });
-
-                const data = await response.json();
-                botMsg.textContent = data.reply; // Display bot response
-            } catch (error) {
-                console.error('Chat error:', error);
-                botMsg.textContent = 'Error: Unable to connect to the AI tutor right now.';
-            }
-
-            chatLog.scrollTop = chatLog.scrollHeight; // Scroll to the bottom
-        }
-    </script>
+  input.value = '';
+  chatLog.scrollTop = chatLog.scrollHeight;
+}
+</script>
 </body>
 </html>
