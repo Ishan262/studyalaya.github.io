@@ -62,8 +62,13 @@ async function handleChat() {
     const data = await response.json();
     botMsg.textContent = "AI: " + data.reply;
   } catch (error) {
-    console.error('Error:', error);
-    botMsg.textContent = 'Error: Unable to connect to the AI Tutor right now.';
+    console.error("🔴 OpenAI ERROR (FULL):", err);
+  if (err.response) {
+    console.error("🔴 OpenAI Response Error:", err.response.status, err.response.data);
+  } else {
+    console.error("🔴 General Error:", err.message);
+  }
+  res.status(500).json({ reply: "Sorry, I couldn't respond right now." });
   }
 
   input.value = '';
