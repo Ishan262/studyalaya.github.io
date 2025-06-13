@@ -11,17 +11,15 @@ app.use(bodyParser.json());
 
 console.log("✅ TOGETHER_API_KEY loaded:", !!process.env.TOGETHER_API_KEY);
 
-// Root route
 app.get("/", (req, res) => {
   res.json({
-    message: "AI Backend is running!",
+    message: "AI Tutor Backend is running!",
     endpoints: {
-      chat: "POST /chat - Send a message to the AI tutor",
+      chat: "POST /chat - Ask a study-related question",
     },
   });
 });
 
-// ✅ /chat endpoint
 app.post("/chat", async (req, res) => {
   const { message } = req.body;
 
@@ -35,20 +33,27 @@ app.post("/chat", async (req, res) => {
       {
         model: "mistralai/Mistral-7B-Instruct-v0.1",
         messages: [
-          { role: "system", content: "You are a helpful tutor for class 10 students." },
-          { role: "user", content: message },
-        ],
+          {
+            role: "system",
+            content: `You are a strict and helpful tutor for class 10 students. Only answer questions related to academic topics like math, science, social science, English, and school-related curriculum. If the user asks anything outside these subjects—such as jokes, personal questions, opinions, or anything inappropriate—reply with: "Sorry, I can only help with class 10 academic subjects."`
+          },
+          {
+            role: "user",
+            content: message
+          }
+        ]
       },
       {
         headers: {
           Authorization: `Bearer ${process.env.TOGETHER_API_KEY}`,
-          "Content-Type": "application/json",
-        },
+          "Content-Type": "application/json"
+        }
       }
     );
 
     const reply = response.data.choices[0].message.content;
     res.json({ reply });
+
   } catch (err) {
     console.error("🔴 Together.ai error:", err.response?.data || err.message);
     res.status(500).json({ reply: "Sorry, the AI assistant could not respond right now." });
