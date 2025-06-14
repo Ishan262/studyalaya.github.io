@@ -1,4 +1,6 @@
-/* General Reset */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+
 * {
     margin: 0;
     padding: 0;
@@ -6,109 +8,248 @@
 }
 
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
-    line-height: 1.6;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #dbe6f6, #c5796d);
+    color: #222;
+    padding: 2rem;
+    transition: all 0.4s ease;
+    background-attachment: fixed;
 }
 
-header {
-    background-color: #00539C;
-    color: white;
-    padding: 2rem 1rem;
+.dark-mode {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #f1f1f1;
+}
+
+
+header, footer {
     text-align: center;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-nav {
-    background-color: #003f7d;
-    padding: 0.5rem 1rem;
+.dark-mode header,
+.dark-mode footer {
+    background: rgba(0, 0, 0, 0.3);
 }
+
 
 nav ul {
     display: flex;
     justify-content: center;
     list-style: none;
-}
-
-nav ul li {
-    margin: 0 1rem;
+    gap: 2rem;
+    padding: 1rem;
+    margin-bottom: 3rem;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 nav ul li a {
+    display: inline-block;
     color: white;
+    font-weight: 600;
     text-decoration: none;
-    font-weight: bold;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
 }
 
+nav ul li a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    filter: brightness(1.1);
+}
+
+.dark-mode nav ul {
+    background: rgba(20, 20, 20, 0.5);
+}
+
+.dark-mode nav ul li a {
+    background: linear-gradient(135deg, #4b6cb7, #182848);
+    color: white;
+}
+
+.dark-mode nav ul li a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+    filter: brightness(1.2);
+}
+
+
 main {
-    padding: 2rem;
+    max-width: 960px;
+    margin: auto;
 }
 
 section {
-    margin-bottom: 2rem;
+    margin-bottom: 12rem;
+    padding: 3rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-.subject-card {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    padding: 1rem;
-    margin: 1rem 0;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+.dark-mode section {
+    background: rgba(0, 0, 0, 0.3);
 }
 
-/* Chatbot Styles */
-#ai-bot {
-    margin-top: 3rem;
+
+h1, h2 {
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    font-size: 2.5rem;
+    display: inline-block;
+    background: linear-gradient(45deg, #2f628f, #1a8c8f);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
 }
+
+.dark-mode h1, .dark-mode h2 {
+    background: linear-gradient(45deg, #00f2fe, #4facfe);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+
+p {
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+
+button {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.theme-toggle {
+    position: absolute;
+    top: 5rem;
+    right: 3rem;
+    z-index: 999;
+}
+
 
 .chatbox {
-    background: #fff;
-    border: 1px solid #ccc;
-    padding: 1rem;
-    border-radius: 8px;
-    max-width: 600px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 16px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .chatbox {
+    background: rgba(0, 0, 0, 0.4);
 }
 
 .chat-log {
-    height: 200px;
+    max-height: 300px;
     overflow-y: auto;
-    margin-bottom: 1rem;
-    background: #f4f4f4;
-    padding: 0.5rem;
-    border-radius: 4px;
+    padding: 1rem;
+    background: #f7f7f7;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.dark-mode .chat-log {
+    background: #1e1e1e;
+    border-color: #444;
 }
 
 .chat-message {
-    padding: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
     margin-bottom: 0.5rem;
+    max-width: 100%;
+    word-wrap: break-word;
+    font-size: 1.3rem;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
 .chat-message.user {
-    text-align: right;
-    color: #0077cc;
+    background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+    align-self: flex-end;
 }
 
 .chat-message.bot {
-    text-align: left;
-    color: #333;
+    background: linear-gradient(135deg, #ffecd2, #fcb69f);
+    align-self: flex-start;
 }
 
-.chatbox input[type="text"] {
-    width: 75%;
-    padding: 0.5rem;
-}
-
-.chatbox button {
-    padding: 0.5rem 1rem;
-    margin-left: 0.5rem;
-}
-
-footer {
-    background-color: #00539C;
+.dark-mode .chat-message.user {
+    background: linear-gradient(135deg, #4b6cb7, #182848);
     color: white;
-    text-align: center;
-    padding: 1rem;
-    margin-top: 2rem;
+}
+
+.dark-mode .chat-message.bot {
+    background: linear-gradient(135deg, #457fca, #5691c8);
+    color: white;
+}
+
+
+input[type="text"] {
+    padding: 0.8rem 1rem;
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    font-size: 1.2rem;
+    background-color: white;
+    transition: 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border: 2px solid #764ba2;
+}
+
+.dark-mode input[type="text"] {
+    background-color: #1c1c1c;
+    color: white;
+}
+
+
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .theme-toggle {
+        position: static;
+        margin-bottom: 1rem;
+    }
+
+    .chatbox {
+        padding: 1rem;
+    }
 }

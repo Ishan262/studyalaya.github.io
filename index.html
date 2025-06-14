@@ -3,116 +3,43 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Studyalaya Foundation - Class 10</title>
+    <title>STUDYALAYA IO – Your Personal AI Tutor</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+    <button class="theme-toggle" onclick="document.body.classList.toggle('dark-mode')">
+        Toggle Theme
+    </button>
     <header>
-        <h1>EduLearn Foundation</h1>
-        <p>Learning Portal for Class 10 Students</p>
+        <h1>STUDYALAYA IO</h1>
+        <p>Your Personal AI Tutor / Doubt Solver</p>
     </header>
 
     <nav>
         <ul>
-            <li><a href="#subjects">Subjects</a></li>
-            <li><a href="#resources">Resources</a></li>
-            <li><a href="#ai-bot">AI Tutor</a></li>
+            <li><a href="#home">Home</a></li>
+            <li><a href="ai.html" target="_blank">AI Assistant</a></li>
             <li><a href="#about">About</a></li>
         </ul>
     </nav>
 
     <main>
-        <section id="subjects">
-            <h2>Subjects</h2>
-            <div id="subject-list">
-                <!-- Populated from JSON -->
-            </div>
-        </section>
-
-        <section id="resources">
-            <h2>Featured Resources</h2>
-            <ul>
-                <li>NCERT Book PDFs</li>
-                <li>Sample Papers</li>
-                <li>Video Lectures</li>
-            </ul>
-        </section>
-
-        <section id="ai-bot">
-            <h2>Ask the AI Tutor</h2>
-            <div class="chatbox">
-                <div id="chat-log" class="chat-log"></div>
-                <input type="text" id="user-input" placeholder="Ask your Class 10 question here..." />
-                <button onclick="handleChat()">Ask</button>
-            </div>
+        <section id="home">
+            <h2>Welcome to Your AI Tutor</h2>
+            <p>Stuck on a question? Need help understanding a topic? STUDYALAYA IO is here to guide you with instant, intelligent support.</p>
+            <a href="ai.html" target="_blank"><button>Talk to AI Assistant</button></a>
         </section>
 
         <section id="about">
-            <h2>About EduLearn Foundation</h2>
+            <h2>About STUDYALAYA IO</h2>
             <p>
-                EduLearn Foundation is designed to help Class 10 students strengthen their basics in Science, Math, and Social Science with curated materials and engaging lessons.
+                STUDYALAYA IO is your AI-powered learning companion. Whether you're revising for exams or exploring new concepts, our smart tutor is always ready to help you learn.
             </p>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 EduLearn Foundation. All rights reserved.</p>
+        <p>&copy; 2025 STUDYALAYA IO. All rights reserved.</p>
     </footer>
-
-    <script>
-        // Load subject data from JSON
-        fetch('subjects.json')
-            .then(response => response.json())
-            .then(data => {
-                const container = document.getElementById('subject-list');
-                data.subjects.forEach(subject => {
-                    const card = document.createElement('div');
-                    card.className = 'subject-card';
-                    card.innerHTML = `
-                        <h3>${subject.name}</h3>
-                        <p>${subject.description}</p>
-                    `;
-                    container.appendChild(card);
-                });
-            })
-            .catch(error => console.error('Error loading subjects:', error));
-
-        // AI Chatbot functionality (connected to Replit backend)
-        async function handleChat() {
-            const input = document.getElementById('user-input');
-            const chatLog = document.getElementById('chat-log');
-            const question = input.value.trim();
-
-            if (!question) return;
-
-            const userMsg = document.createElement('div');
-            userMsg.className = 'chat-message user';
-            userMsg.textContent = question;
-            chatLog.appendChild(userMsg);
-
-            input.value = '';
-
-            const botMsg = document.createElement('div');
-            botMsg.className = 'chat-message bot';
-            botMsg.textContent = 'Thinking...';
-            chatLog.appendChild(botMsg);
-
-            try {
-                const response = await fetch('https://1b5e94ce-6773-446a-96d6-3c50f6efb9c1-00-2mmj12s1ucuol.sisko.replit.dev/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: question })
-                });
-
-                const data = await response.json();
-                botMsg.textContent = data.reply;
-            } catch (error) {
-                console.error('Chat error:', error);
-                botMsg.textContent = 'Error: Unable to connect to the AI tutor right now.';
-            }
-
-            chatLog.scrollTop = chatLog.scrollHeight;
-        }
-    </script>
 </body>
 </html>
