@@ -91,8 +91,8 @@ main {
 }
 
 section {
-    margin-bottom: 2rem;
-    padding: 2rem;
+    margin-bottom: 12rem;
+    padding: 3rem;
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(12px);
@@ -107,7 +107,7 @@ section {
 h1, h2 {
     margin-bottom: 0.75rem;
     font-weight: 700;
-    font-size: 2rem;
+    font-size: 2.5rem;
     display: inline-block;
     background: linear-gradient(45deg, #2f628f, #1a8c8f);
     background-clip: text;
@@ -127,7 +127,7 @@ h1, h2 {
 
 p {
     margin-bottom: 1rem;
-    font-size: 1.05rem;
+    font-size: 1.3rem;
 }
 
 
@@ -137,7 +137,7 @@ button {
     color: white;
     border: none;
     border-radius: 10px;
-    font-size: 1rem;
+    font-size: 1.3rem;
     font-weight: 600;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -190,9 +190,9 @@ button:hover {
     padding: 0.75rem 1rem;
     border-radius: 12px;
     margin-bottom: 0.5rem;
-    max-width: 80%;
+    max-width: 100%;
     word-wrap: break-word;
-    font-size: 0.95rem;
+    font-size: 1.3rem;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -222,7 +222,7 @@ input[type="text"] {
     border: none;
     border-radius: 10px;
     width: 100%;
-    font-size: 1rem;
+    font-size: 1.2rem;
     background-color: white;
     transition: 0.3s;
 }
