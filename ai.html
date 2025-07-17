@@ -33,6 +33,10 @@
     </footer>
 
 <script>
+document.getElementById('user-input').addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') handleChat();
+});
+
 async function handleChat() {
   const input = document.getElementById('user-input');
   const chatLog = document.getElementById('chat-log');
@@ -40,15 +44,19 @@ async function handleChat() {
 
   if (!question) return;
 
+  const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
   const userMsg = document.createElement('div');
   userMsg.className = 'chat-message user';
-  userMsg.textContent = "You: " + question;
+  userMsg.textContent = `You (${timestamp}): ${question}`;
   chatLog.appendChild(userMsg);
 
   const botMsg = document.createElement('div');
   botMsg.className = 'chat-message bot';
   botMsg.textContent = 'AI Tutor is thinking...';
   chatLog.appendChild(botMsg);
+
+  chatLog.scrollTop = chatLog.scrollHeight;
 
   try {
     const response = await fetch('https://studyalaya-github-io.onrender.com/chat', {
@@ -58,9 +66,7 @@ async function handleChat() {
     });
 
     const data = await response.json();
-
-    // ✨ Typing animation
-    await typeText(botMsg, data.reply);
+    await typeText(botMsg, `AI (${timestamp}): ${data.reply}`);
 
   } catch (error) {
     console.error('Error:', error);
@@ -71,15 +77,14 @@ async function handleChat() {
   chatLog.scrollTop = chatLog.scrollHeight;
 }
 
-// 💬 Typing animation helper
 async function typeText(element, text) {
-  element.textContent = "AI: ";
+  element.textContent = '';
   for (let i = 0; i < text.length; i++) {
     element.textContent += text.charAt(i);
-    await new Promise(resolve => setTimeout(resolve, 25)); // speed in ms
+    await new Promise(resolve => setTimeout(resolve, 20));
   }
 }
-
 </script>
+
 </body>
 </html>
