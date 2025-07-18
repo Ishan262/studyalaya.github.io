@@ -1,36 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>STUDYALAYA IO – Your Personal AI Assistant</title>
-    <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>STUDYALAYA IO – Your Personal AI Assistant</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <button class="theme-toggle" onclick="document.body.classList.toggle('dark-mode')">
-        Toggle Theme
-    </button>
+  <button class="theme-toggle" onclick="document.body.classList.toggle('dark-mode')">Toggle Theme</button>
 
-    <header>
-        <h1>STUDYALAYA IO – AI Assistant</h1>
-        <p>Ask your doubts. Get instant answers.</p>
-    </header>
+  <header>
+    <h1>STUDYALAYA IO – AI Assistant</h1>
+    <p>Ask your doubts. Get instant answers.</p>
+  </header>
 
-    <main>
-        <section>
-            <div class="chatbox">
-                <div id="chat-log" class="chat-log"></div>
-                <div class="chat-input">
-                    <input type="text" id="user-input" placeholder="Type your question..." />
-                    <button onclick="handleChat()">Ask</button>
-                </div>
-            </div>
-        </section>
-    </main>
+  <main>
+    <section>
+      <div class="chatbox">
+        <div id="chat-log" class="chat-log"></div>
+        <div class="chat-input">
+          <input type="text" id="user-input" placeholder="Type your question..." />
+          <button onclick="handleChat()">Ask</button>
+          <button id="mic-button" title="Speak your question">🎤</button>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    <footer>
-        <p>&copy; 2025 STUDYALAYA IO. All rights reserved.</p>
-    </footer>
+  <footer>
+    <p>&copy; 2025 STUDYALAYA IO. All rights reserved.</p>
+  </footer>
 
 <script>
 document.getElementById('user-input').addEventListener('keypress', function (e) {
@@ -66,8 +65,9 @@ async function handleChat() {
     });
 
     const data = await response.json();
-    await typeText(botMsg, `AI (${timestamp}): ${data.reply}`);
-
+    const replyText = `AI (${timestamp}): ${data.reply}`;
+    await typeText(botMsg, replyText);
+    speak(data.reply); // 🗣️ Text-to-Speech added here
   } catch (error) {
     console.error('Error:', error);
     botMsg.textContent = 'Error: Unable to connect to the AI Tutor right now.';
@@ -84,7 +84,44 @@ async function typeText(element, text) {
     await new Promise(resolve => setTimeout(resolve, 20));
   }
 }
-</script>
 
+// 🔊 Text-to-Speech (Bot speaks)
+function speak(text) {
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-US';
+  utter.rate = 1;
+  speechSynthesis.speak(utter);
+}
+
+// 🎙️ Voice Assistant (Mic-to-Text)
+const micButton = document.getElementById('mic-button');
+const recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (recognition) {
+  const speech = new recognition();
+  speech.lang = 'en-US';
+  speech.continuous = false;
+
+  micButton.addEventListener('click', () => {
+    micButton.textContent = '🎙️ Listening...';
+    speech.start();
+  });
+
+  speech.onresult = function (event) {
+    const transcript = event.results[0][0].transcript;
+    document.getElementById('user-input').value = transcript;
+    micButton.textContent = '🎤';
+    handleChat();
+  };
+
+  speech.onerror = function () {
+    micButton.textContent = '🎤';
+    alert("Could not recognize speech. Please try again.");
+  };
+} else {
+  micButton.disabled = true;
+  micButton.title = "Speech recognition not supported in this browser.";
+}
+</script>
 </body>
 </html>
